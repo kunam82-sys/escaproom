@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Control Room</title>
+
+<style>
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  background:#0a0f1c;
+  font-family:'Courier New', monospace;
+  color:#7df9ff;
+}
+.room{
+  position:absolute; inset:0;
+}
+.hotspot{
+  position:absolute;
+  width:80px;height:80px;
+  border-radius:50%;
+  background:rgba(0,255,255,.2);
+  border:2px solid cyan;
+  cursor:pointer;
+}
+.bomb{
+  position:absolute;
+  top:20px; right:20px;
+  background:black;
+  border:3px solid red;
+  padding:20px;
+}
+#timer{ font-size:60px; }
+</style>
+</head>
+
+<body>
+
+<div class="room">
+
+  <div class="hotspot" style="top:45%;left:42%" onclick="go('hart.html')"></div>
+  <div class="hotspot" style="top:48%;left:56%" onclick="go('oor.html')"></div>
+  <div class="hotspot" style="top:35%;left:50%" onclick="go('longen.html')"></div>
+
+  <div class="bomb">
+    <div id="timer">60:00</div>
+    <input id="code" placeholder="CODE">
+    <button onclick="check()">OK</button>
+  </div>
+
+</div>
+
+<script>
+let t=3600;
+let stop=false;
+const juiste="7384";
+
+function tick(){
+  if(stop) return;
+  let m=Math.floor(t/60);
+  let s=t%60;
+  timer.innerText=
+    String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  if(t<=0){ timer.innerText="💥 BOOM"; stop=true; }
+  t--;
+}
+setInterval(tick,1000);
+
+function check(){
+  if(code.value===juiste){
+    stop=true;
+    timer.innerText="✔ DISARMED";
+  }else{
+    t-=600;
+    if(t<0) t=0;
+    alert("FOUTE CODE -10 MIN");
+    code.value="";
+  }
+}
+
+function go(p){
+  window.open(p,"_blank");
+}
+</script>
+
+</body>
+</html>
